@@ -1,0 +1,12 @@
+body {
+    padding: 50px;
+}
+
+.authorization {
+    background: linear-gradient(90deg, #b9deed, #efefef);
+    border-radius: 10px;
+}
+
+.bg-btn {
+    background-color: #4169E1;
+}
