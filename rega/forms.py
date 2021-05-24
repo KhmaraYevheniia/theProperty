@@ -86,6 +86,7 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(f'Пользователь с таким емейлом уже зарегистрирован!')
 
         return email
+        
 
     def clean_username(self):
         username = self.cleaned_data['username']
