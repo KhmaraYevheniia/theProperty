@@ -10,8 +10,16 @@
 
 {% block form %}
 <div class="form-group mb-2">
-    <label class="mb-2" for="exampleInputEmail1">Имя</label>
-    {{form.name}}
+    <label class="mb-2" for="exampleFirstName1">Имя</label>
+    {{form.first_name}}
+</div>
+<div class="form-group mb-2">
+    <label class="mb-2" for="exampleInputLastname1">Фамилия</label>
+    {{form.last_name}}
+</div>
+<div class="form-group mb-2">
+    <label class="mb-2" for="exampleUserNaME1">Никнейм</label>
+    {{form.username}}
 </div>
 <div class="form-group mb-2">
     <label class="mb-2" for="exampleInputEmail1">Электроная почта</label>
@@ -50,4 +58,13 @@
     <button type="submit" class="btn btn-primary px-4 py-2 border-0 bg-btn">Создать</button>
     <a href="rega">Авторизоваться</a>
 </div>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    let error = "{{ error }}";
+    if (error.trim().split(' ').length > 2) {
+      $('.alert-danger').addClass( "show" );
+    }
+  });
+</script>
 {% endblock %}
