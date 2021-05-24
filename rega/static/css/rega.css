@@ -10,3 +10,7 @@ body {
 .bg-btn {
     background-color: #4169E1;
 }
+
+.alert-danger {
+  display: flow-root;
+}

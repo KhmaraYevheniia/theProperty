@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rega'
 ]
 
+AUTH_USER_MODEL = 'rega.User'
+ACCOUNT_EMAIL_REQUIRED = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -130,6 +133,3 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
