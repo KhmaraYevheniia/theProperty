@@ -14,3 +14,27 @@ body {
 .alert-danger {
   display: flow-root;
 }
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  margin: 0 0 50px 0;
+  padding: 20px 20px 20px 20px;
+}
+
+.links-section-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.nav-links-header {
+  margin-right: 20px;
+}
+
+.text-dark {
+  text-decoration: none;
+}
