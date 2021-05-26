@@ -38,3 +38,8 @@ body {
 .text-dark {
   text-decoration: none;
 }
+
+.current_user {
+  text-decoration: none;
+  margin-left: 70px;
+}
