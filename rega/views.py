@@ -84,4 +84,4 @@ def sign_in(request):
 @login_required
 def sign_out(request):
     logout(request)
-    return redirect('sign_in')
+    return redirect('/sign_in')
