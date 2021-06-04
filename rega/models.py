@@ -33,3 +33,8 @@ class PropertyObject(models.Model):
     type = models.CharField('type', max_length=100)
     address = models.CharField('address', max_length=300)
     sold_status = models.BooleanField('sold_status', default=False)
+
+class Contract(models.Model):
+    property_object = models.ForeignKey(PropertyObject, on_delete=models.CASCADE)
+    sale_date = models.DateField()
+    seller_name = models.CharField(max_length=100)
