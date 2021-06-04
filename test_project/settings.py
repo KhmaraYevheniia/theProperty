@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'rega.User'
 ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_URL='/sign_in'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

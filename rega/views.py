@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from .models import User
 from .forms import LoginForm, RegistrationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def index(request):
     users = User.objects.all()
-    return render(request, 'rega/index.html', {'users': users})
+    if request.user.is_authenticated:
+        return render(request, 'rega/index.html', {'users': users})
 
 def registration(request):
     error = ''
@@ -20,7 +24,8 @@ def registration(request):
             new_user.save()
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()
-            login(request, new_user)
+            auth_user = authenticate(username=new_user.username, password=form.cleaned_data['password'])
+            login(request, auth_user)
             return redirect('users')
         else:
             error = 'Форма заполнена неверно. Попробуйте еще раз'
@@ -51,10 +56,12 @@ def sign_in(request):
 
         if form.is_valid():
             email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
             user = User.objects.get(email=email)
+            auth_user = authenticate(username=user.username, password=password)
             # breakpoint()
-            if user:
-                login(request, user)
+            if auth_user:
+                login(request, auth_user)
                 return redirect('users')
         else:
             error = 'Пароль или емайл не корректны!'
@@ -72,3 +79,9 @@ def sign_in(request):
     }
     if request.method == 'GET':
         return render(request, 'rega/sign_in.html', context)
+
+
+@login_required
+def sign_out(request):
+    logout(request)
+    return redirect('/sign_in')
