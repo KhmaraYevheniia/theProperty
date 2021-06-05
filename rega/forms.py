@@ -1,5 +1,5 @@
 from django.db import models
-from .models import User
+from .models import User, PropertyObject
 # from django.forms import ModelForm, TextInput, fields, widgets, RadioSelect
 from django import forms
 
@@ -86,7 +86,7 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(f'Пользователь с таким емейлом уже зарегистрирован!')
 
         return email
-        
+
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -98,6 +98,63 @@ class RegistrationForm(forms.ModelForm):
 
     def clean(self):
         return self.cleaned_data
+
+
+class PropertyObjectForm(forms.ModelForm):
+
+    class Meta:
+        model = PropertyObject
+        fields = ['latitude', 'longitude', 'square', 'price', 'type', 'address', 'sold_status']
+        widgets = {
+            'latitude': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g. 124.564577',
+                'type': 'text'
+            }),
+            'longitude': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g. 124.564577',
+                'type': 'text'
+            }),
+            'square': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'square of object',
+                'type': 'text'
+            }),
+            'price': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'price of object',
+                'type': 'text'
+            }),
+            'type': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g. apartment',
+                'type': 'text'
+            }),
+            'address': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'address of the building',
+                'type': 'text'
+            }),
+            'sold_status': forms.TextInput(attrs={
+                'class': 'form-check-input',
+                'type': 'checkbox',
+                'name': 'sold_status',
+                'id': ['sold_status']
+            })
+        }
+
+    def clean(self):
+        latitude = self.cleaned_data['latitude']
+        longitude = self.cleaned_data['longitude']
+        square = self.cleaned_data['square']
+        price = self.cleaned_data['price']
+        type = self.cleaned_data['type']
+        address = self.cleaned_data['address']
+        if latitude and longitude and square and price and type and address:
+            return self.cleaned_data
+        else:
+            raise forms.ValidationError(f'The fields were entered incorrect!')
 
 
 
