@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import User, PropertyObject
-from .forms import LoginForm, RegistrationForm, PropertyObjectForm
+from .models import Contract, User, PropertyObject
+from .forms import LoginForm, RegistrationForm, PropertyObjectForm, PropertyContractForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -57,6 +57,46 @@ def create_object(request):
     if request.method == 'GET':
         return render(request, 'rega/create_object.html', context)
 
+@login_required
+def create_contract(request):
+    error = ''
+    if request.method == 'POST':
+        form = PropertyContractForm(request.POST)
+        property_object = request.POST["property_object"]
+        sale_date = request.POST["sale_date"]
+        seller_name = request.POST["seller_name"]
+        # users = request.POST["users"]
+        if property_object and sale_date and seller_name:
+            if form.is_valid():
+                new_object = form.save(commit=False)
+                new_object.save()
+                return redirect('dashboard')
+            else:
+                error = 'Not all required fields are filled!'
+                context = {
+                    'form': form,
+                    'error': error,
+                    'form_name': 'Create new contract'
+                    }
+                return render(request, 'rega/create_contract.html', context)
+        else:
+            error = 'The data type of the entered fields are not correct!'
+            context = {
+                'form': form,
+                'error': error,
+                'form_name': 'Create new contract'
+                }
+            return render(request, 'rega/create_contract.html', context)
+
+    form = PropertyContractForm()
+    context = {
+        'form': form,
+        'users': [1, 2, 3, 4],
+        'form_name': 'Create new contract',
+        'error': error
+    }
+    if request.method == 'GET':
+        return render(request, 'rega/create_contract.html', context)
 
 def registration(request):
     error = ''
