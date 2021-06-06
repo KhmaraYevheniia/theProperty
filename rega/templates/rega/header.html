@@ -5,12 +5,12 @@
     {% if request.user.is_authenticated %}
     <nav class="nav-links-header">
       <a class="p-2 text-dark text-primary" href="">Objects</a>
-      <a class="p-2 text-dark" href="#">Statistics</a>
-      <a class="p-2 text-dark" href="#">Coworkers</a>
+      <a class="p-2 text-dark" href="#">Contracts</a>
+      <a class="p-2 text-dark" href="#">Staff</a>
       {% if request.path != '/create_object' %}
       <a class="p-2 btn btn-outline-info" href="create_object">Create Object</a>
       {% endif %}
-      {% if request.path != '/create_object' %}
+      {% if request.path != '/create_contract' %}
       <a class="p-2 btn btn-outline-info" href="create_contract">Create Contract</a>
       {% endif %}
       <a class="link-warning current_user" href="#">{{ request.user.full_name }}</a>

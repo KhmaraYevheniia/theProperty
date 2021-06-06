@@ -1,3 +1,4 @@
+from typing import Collection
 from django.shortcuts import render, redirect
 from .models import Contract, User, PropertyObject
 from .forms import LoginForm, RegistrationForm, PropertyObjectForm, PropertyContractForm
@@ -60,13 +61,15 @@ def create_object(request):
 @login_required
 def create_contract(request):
     error = ''
+    collection_objects = PropertyObject.objects.all()
+
     if request.method == 'POST':
         form = PropertyContractForm(request.POST)
         property_object = request.POST["property_object"]
         sale_date = request.POST["sale_date"]
         seller_name = request.POST["seller_name"]
-        # users = request.POST["users"]
-        if property_object and sale_date and seller_name:
+        users = request.POST["users"]
+        if property_object and sale_date and seller_name and users:
             if form.is_valid():
                 new_object = form.save(commit=False)
                 new_object.save()
@@ -91,8 +94,9 @@ def create_contract(request):
     form = PropertyContractForm()
     context = {
         'form': form,
-        'users': [1, 2, 3, 4],
+        'users': User.objects.all(),
         'form_name': 'Create new contract',
+        'collection_objects': collection_objects,
         'error': error
     }
     if request.method == 'GET':

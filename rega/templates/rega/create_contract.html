@@ -30,7 +30,11 @@
             {% csrf_token %}
             <div class="my-row">
                 <label for="validationPropertyObject">Property object</label>
-                {{form.property_object}}
+                <select name="property_object" id="multi-select-objects">
+                    {% for object in collection_objects %}
+                    <option value="{{object.id}}">{{ object.address }}</option>
+                    {% endfor %}
+                </select>
                 <div>
                     <label for="validationSaleDate">Sale date</label>
                     {{form.sale_date}}
@@ -40,17 +44,17 @@
                     {{form.seller_name}}
                 </div>
                 <div>
-                    <label for="multi-select">Users</label>
-                    <select class="form-select form-select-md mb-3" name="select" id="multi-select">
+                    <label for="multi-select-users">Users</label>
+                    <select name="users" id="multi-select-users">
                         {% for user in users %}
-                        <option value="">{{ user }}</option>
+                        <option value="{{user.id}}">{{ user.full_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
             </div>
 
-            <button class="my-row btn btn-primary" type="submit">Save</button>
+            <button class=" my-row btn btn-primary" type="submit">Save</button>
         </form>
     </div>
 </body>
@@ -63,5 +67,8 @@
         if (error.trim().split(' ').length > 2) {
             $('.alert-danger').addClass("show");
         }
+        var $mSelect = $('#multi-select-users').selectize({ placeholder: "Select a value" });
+        var $mSelectObj = $('#multi-select-objects').selectize({ placeholder: "Select a value" });
     });
+
 </script>

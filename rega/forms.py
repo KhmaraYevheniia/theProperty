@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.db import models
 from .models import User, PropertyObject, Contract
 # from django.forms import ModelForm, TextInput, fields, widgets, RadioSelect
@@ -160,6 +161,11 @@ class PropertyObjectForm(forms.ModelForm):
 class PropertyContractForm(forms.ModelForm):
 
     class Meta:
+        
+        list_users = []
+        for user in User.objects.all():
+            list_users.append((user.id, user.full_name))
+        CHOICES = list_users
         model = Contract
         fields = ['property_object', 'sale_date', 'seller_name']
         widgets = {
@@ -178,8 +184,10 @@ class PropertyContractForm(forms.ModelForm):
                 'placeholder': 'Seller name',
                 'type': 'text'
             }),
-            'users': forms.Select(attrs={
+                'users': forms.Select(attrs={
                 'class': 'form-select',
-                'multiple': 'multiple'
+                'choices': CHOICES,
+                'id': 'multi-select-users'
+                
             })
         }
