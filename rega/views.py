@@ -17,6 +17,15 @@ def index(request):
         }
         return render(request, 'rega/index.html', context)
 
+def contracts(request):
+    property_contract = Contract.objects.all()
+    user_contract = User.objects.all()
+    context = {
+        'property_contract': property_contract,
+        'user_contract': user_contract
+    }
+    return render(request, 'rega/contracts.html', context)
+
 @login_required
 def create_object(request):
     error = ''
@@ -65,15 +74,15 @@ def create_contract(request):
 
     if request.method == 'POST':
         form = PropertyContractForm(request.POST)
-        property_object = request.POST["property_object"]
+        property_contract = request.POST["property_contract"]
         sale_date = request.POST["sale_date"]
         seller_name = request.POST["seller_name"]
         users = request.POST["users"]
-        if property_object and sale_date and seller_name and users:
+        if property_contract and sale_date and seller_name and users:
             if form.is_valid():
-                new_object = form.save(commit=False)
-                new_object.save()
-                return redirect('dashboard')
+                new_contract = form.save(commit=False)
+                new_contract.save()
+                return redirect('contracts')
             else:
                 error = 'Not all required fields are filled!'
                 context = {
@@ -173,7 +182,6 @@ def sign_in(request):
     }
     if request.method == 'GET':
         return render(request, 'rega/sign_in.html', context)
-
 
 @login_required
 def sign_out(request):

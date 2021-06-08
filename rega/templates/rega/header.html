@@ -5,7 +5,7 @@
     {% if request.user.is_authenticated %}
     <nav class="nav-links-header">
       <a class="p-2 text-dark text-primary" href="">Objects</a>
-      <a class="p-2 text-dark" href="#">Contracts</a>
+      <a class="p-2 text-dark" href="contracts">Contracts</a>
       <a class="p-2 text-dark" href="#">Staff</a>
       {% if request.path != '/create_object' %}
       <a class="p-2 btn btn-outline-info" href="create_object">Create Object</a>
