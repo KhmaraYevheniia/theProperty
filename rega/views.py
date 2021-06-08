@@ -3,16 +3,23 @@ from .models import User, PropertyObject
 from .forms import LoginForm, RegistrationForm, PropertyObjectForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg, Count, Min, Sum
 
 @login_required
 def index(request):
-    property_objects = PropertyObject.objects.all()
+    property_objects = PropertyObject.objects.all().order_by('-id')
+    objects_quantity = property_objects.count()
     unsold_objects_quantity = PropertyObject.objects.filter(sold_status=False).count()
+    sold_objects_quantity = objects_quantity - unsold_objects_quantity
+    total_income = PropertyObject.objects.aggregate(Sum('price'))
+
     if request.user.is_authenticated:
         context = {
           'unsold_objects_quantity': unsold_objects_quantity,
-          'objects_quantity': property_objects.count(),
-          'property_objects': property_objects
+          'objects_quantity': objects_quantity,
+          'property_objects': property_objects[:14],
+          'sold_objects_quantity': sold_objects_quantity,
+          'total_income': round(total_income['price__sum'])
         }
         return render(request, 'rega/index.html', context)
 

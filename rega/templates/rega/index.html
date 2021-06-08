@@ -19,9 +19,28 @@
 <body>
   {% include "rega/header.html" %}
   <div class="dashboard-content">
-    <div class="objects-grafs">
-      <h3 class="main-h3">Sales statistics</h3>
-      <canvas id="chart-line" width="299" height="200" class="chartjs-render-monitor" style="display: block; width: 299px; height: 200px;"></canvas>
+    <div class="statistics-content">
+      <div class="objects-grafs">
+        <h3 class="main-h3">Sales statistics</h3>
+        <canvas id="chart-line" width="299" height="200" class="chartjs-render-monitor" style="display: block; width: 299px; height: 200px;"></canvas>
+      </div>
+      <div class="summery-content">
+        <h2 class="static-title">Summary</h2>
+        <div class="statistics-list">
+          <div class="statistic-item">
+            <div class="statistic-key">Objects properties</div>
+            <div class="statistic-value">{{objects_quantity}}</div>
+          </div>
+          <div class="statistic-item">
+            <div class="statistic-key">Income</div>
+            <div class="statistic-value">{{total_income}} $</div>
+          </div>
+          <div class="statistic-item-last">
+            <div class="statistic-key">Contracts</div>
+            <div class="statistic-value">{{sold_objects_quantity}}</div>
+          </div>
+      </div>
+      </div>
     </div>
     <div class="objects-table">
       <table class="table">
