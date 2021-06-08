@@ -4,25 +4,34 @@ from .models import Contract, User, PropertyObject
 from .forms import LoginForm, RegistrationForm, PropertyObjectForm, PropertyContractForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models import Avg, Count, Min, Sum
 
 @login_required
 def index(request):
-    property_objects = PropertyObject.objects.all()
+    property_objects = PropertyObject.objects.all().order_by('-id')
+    objects_quantity = property_objects.count()
     unsold_objects_quantity = PropertyObject.objects.filter(sold_status=False).count()
+    sold_objects_quantity = objects_quantity - unsold_objects_quantity
+    total_income = PropertyObject.objects.aggregate(Sum('price'))
+
     if request.user.is_authenticated:
         context = {
           'unsold_objects_quantity': unsold_objects_quantity,
-          'objects_quantity': property_objects.count(),
-          'property_objects': property_objects
+          'objects_quantity': objects_quantity,
+          'property_objects': property_objects[:14],
+          'sold_objects_quantity': sold_objects_quantity,
+          'total_income': round(total_income['price__sum'])
         }
         return render(request, 'rega/index.html', context)
 
 def contracts(request):
-    property_contract = Contract.objects.all()
+    property_contracts = Contract.objects.all()
     user_contract = User.objects.all()
+    property_contracts_count = property_contracts.count()
     context = {
-        'property_contract': property_contract,
-        'user_contract': user_contract
+        'property_contracts': property_contracts,
+        'user_contract': user_contract,
+        'property_contracts_count': property_contracts_count
     }
     return render(request, 'rega/contracts.html', context)
 
@@ -74,14 +83,17 @@ def create_contract(request):
 
     if request.method == 'POST':
         form = PropertyContractForm(request.POST)
-        property_contract = request.POST["property_contract"]
+        user_creator = User.objects.get(id=request.POST.get('users'))
+        property_object = request.POST["property_object"]
         sale_date = request.POST["sale_date"]
         seller_name = request.POST["seller_name"]
         users = request.POST["users"]
-        if property_contract and sale_date and seller_name and users:
+        if property_object and sale_date and seller_name and users:
             if form.is_valid():
                 new_contract = form.save(commit=False)
                 new_contract.save()
+                new_contract.users.add(user_creator)
+                PropertyObject.objects.filter(id=new_contract.property_object_id).update(sold_status=True)
                 return redirect('contracts')
             else:
                 error = 'Not all required fields are filled!'

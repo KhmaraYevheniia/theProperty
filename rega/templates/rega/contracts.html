@@ -26,23 +26,25 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Object</th>
+                        <th scope="col">Property object address</th>
                         <th scope="col">Sale date</th>
                         <th scope="col">Seller name</th>
-                        <th scope="col">User</th>
+                        <th scope="col">Manager name</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for el in property_contract %}
-                    <tr>
+                {% if property_contracts_count > 0 %}
+                  <tbody>
+                    {% for el in property_contracts %}
+                      <tr>
                         <td>{{ el.id }}</td>
-                        <td>{{ el.address }}</td>
+                        <td>{{ el.property_object.address }}</td>
                         <td>{{ el.sale_date }}</td>
                         <td>{{ el.seller_name }}</td>
-                        <td>{{ el.users }}</td>
-                    </tr>
+                        <td>{{el.users.first.full_name}}</td>
+                      </tr>
                     {% endfor %}
-                </tbody>
+                  </tbody>
+                {% endif %}
             </table>
         </div>
     </div>
