@@ -1,22 +1,27 @@
 <div class="bg-white border-bottom shadow-sm main-header">
 
-  <h5 class="font-weight-normal">Property Centropolis</h5>
+  <h5 class="font-weight-normal"><a class="p-2 text-dark" href="/">Property Centropolis</a></h5>
   <div class="links-section-header">
     {% if request.user.is_authenticated %}
-      <nav class="nav-links-header">
-        <a class="p-2 text-dark" href="#">Objects</a>
-        <a class="p-2 text-dark" href="#">Statistics</a>
-        <a class="p-2 text-dark" href="#">Coworkers</a>
-        <a class="p-2 btn btn-outline-info" href="#">Dashbord</a>
-        <a class="link-warning current_user" href="#">{{ request.user.full_name }}</a>
-      </nav>
-      <a class="btn btn-outline-primary" href="sign_out">Log out</a>
-    {% else %}
-      {% if request.path == '/sign_in' %}
-        <a class="btn btn-outline-primary" href="registration">Sign up</a>
-      {% elif request.path == '/registration' %}
-        <a class="btn btn-outline-primary" href="sign_in">Log in</a>
+    <nav class="nav-links-header">
+      <a class="p-2 text-dark text-primary" href="objects">Objects</a>
+      <a class="p-2 text-dark" href="contracts">Contracts</a>
+      <a class="p-2 text-dark" href="#">Staff</a>
+      {% if request.path != '/create_object' %}
+      <a class="p-2 btn btn-outline-info" href="create_object">Create Object</a>
       {% endif %}
+      {% if request.path != '/create_contract' %}
+      <a class="p-2 btn btn-outline-info" href="create_contract">Create Contract</a>
+      {% endif %}
+      <a class="link-warning current_user" href="#">{{ request.user.full_name }}</a>
+    </nav>
+    <a class="btn btn-outline-primary" href="sign_out">Log out</a>
+    {% else %}
+    {% if request.path == '/sign_in' %}
+    <a class="btn btn-outline-primary" href="registration">Sign up</a>
+    {% elif request.path == '/registration' %}
+    <a class="btn btn-outline-primary" href="sign_in">Log in</a>
+    {% endif %}
     {% endif %}
   </div>
 

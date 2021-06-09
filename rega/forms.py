@@ -1,5 +1,6 @@
+from django.contrib.auth import login
 from django.db import models
-from .models import User
+from .models import User, PropertyObject, Contract
 # from django.forms import ModelForm, TextInput, fields, widgets, RadioSelect
 from django import forms
 
@@ -86,7 +87,7 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(f'Пользователь с таким емейлом уже зарегистрирован!')
 
         return email
-        
+
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -100,8 +101,93 @@ class RegistrationForm(forms.ModelForm):
         return self.cleaned_data
 
 
+class PropertyObjectForm(forms.ModelForm):
 
-        # <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-        #         <label class="form-check-label" for="gridRadios1">
-        #             Администратор
-        #         </label>
+    class Meta:
+        model = PropertyObject
+        fields = ['latitude', 'longitude', 'square', 'price', 'type', 'address', 'sold_status']
+        widgets = {
+            'latitude': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g. 124.564577',
+                'type': 'text'
+            }),
+            'longitude': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g. 124.564577',
+                'type': 'text'
+            }),
+            'square': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'square of object',
+                'type': 'text'
+            }),
+            'price': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'price of object',
+                'type': 'text'
+            }),
+            'type': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g. apartment',
+                'type': 'text'
+            }),
+            'address': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'address of the building',
+                'type': 'text'
+            }),
+            'sold_status': forms.TextInput(attrs={
+                'class': 'form-check-input',
+                'type': 'checkbox',
+                'name': 'sold_status',
+                'id': ['sold_status']
+            })
+        }
+
+    def clean(self):
+        latitude = self.cleaned_data['latitude']
+        longitude = self.cleaned_data['longitude']
+        square = self.cleaned_data['square']
+        price = self.cleaned_data['price']
+        type = self.cleaned_data['type']
+        address = self.cleaned_data['address']
+        if latitude and longitude and square and price and type and address:
+            return self.cleaned_data
+        else:
+            raise forms.ValidationError(f'The fields were entered incorrect!')
+
+
+class PropertyContractForm(forms.ModelForm):
+
+    class Meta:
+        
+        list_users = []
+        for user in User.objects.all():
+            list_users.append((user.id, user.full_name))
+        CHOICES = list_users
+        model = Contract
+        fields = ['property_object', 'sale_date', 'seller_name']
+        widgets = {
+            'property_object': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Property object',
+                'type': 'text'
+            }),
+            'sale_date': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '2021-06-06',
+                'type': 'date'
+            }),
+            'seller_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Seller name',
+                'type': 'text'
+            }),
+                'users': forms.Select(attrs={
+                'class': 'form-select',
+                'choices': CHOICES,
+                'id': 'multi-select-users'
+                
+            })
+        }

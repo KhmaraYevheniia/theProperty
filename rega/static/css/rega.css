@@ -1,14 +1,14 @@
-.container{
-    padding: 50px;
+.container {
+  padding: 50px;
 }
 
 .authorization {
-    background: linear-gradient(90deg, #b9deed, #efefef);
-    border-radius: 10px;
+  background: linear-gradient(90deg, #b9deed, #efefef);
+  border-radius: 10px;
 }
 
 .bg-btn {
-    background-color: #4169E1;
+  background-color: #4169e1;
 }
 
 .alert-danger {
@@ -20,7 +20,7 @@
   justify-content: space-between;
   align-items: center;
   height: 80px;
-  margin: 0 0 50px 0;
+  margin: 0 0 20px 0;
   padding: 20px 20px 20px 20px;
 }
 
@@ -28,7 +28,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .nav-links-header {
@@ -42,4 +41,130 @@
 .current_user {
   text-decoration: none;
   margin-left: 70px;
+}
+
+.create_object-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-form {
+  justify-content: center;
+  font-family: 'Helvetica';
+}
+
+.price-row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+}
+.coord-row {
+  display: flex !important;
+  justify-content: space-between;
+}
+
+.input-field {
+  width: 47%;
+}
+.form-check {
+  margin: 10px;
+}
+.btn-primary {
+  width: 200px;
+}
+.my-row {
+  margin: 10px;
+}
+.main-h3 {
+  font-family: 'Helvetica';
+  justify-content: center;
+  display: flex;
+  margin: 10px;
+  font-size: 24px;
+}
+
+.bg-warning {
+  text-align: center;
+  background-color: rgba(255, 99, 71, 0.2) !important;
+}
+
+.bg-success {
+  text-align: center;
+  background-color: rgba(100, 255, 0, 0.2) !important;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.statistics-content {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  padding: 20px;
+  background-color: #f9f9fa;
+  margin-right: 20px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.summery-content {
+}
+
+.objects-grafs {
+  padding: 0 26px 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.static-title {
+  color: #666666;
+  font-size: 18px;
+  margin: 26px 0 20px 0;
+  padding: 0 26px;
+}
+
+.statistic-item {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 64px;
+  padding: 0 26px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.statistic-item-last {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 64px;
+  padding: 0 26px;
+}
+.statistic-key {
+  color: #a1a1a1;
+  font-size: 14px;
+}
+.statistic-value {
+  font-size: 18px;
+  margin: 0 0 0 auto;
+}
+
+.objects-table {
+  border-radius: 4px;
+  background: #f9f9fa;
+  border: 1px solid #e0e0e0;
+  width: 60%;
+  padding: 20px;
+  height: 100%;
+}
+
+.contracts-table {
+  width: 100%;
+  padding: 20px;
+}
+
+.latitude-arrow {
+  cursor: pointer;
 }
