@@ -46,7 +46,11 @@
                         <td>{{el.price}}</td>
                         <td>{{el.type}}</td>
                         <td>{{el.address}}</td>
-                        <td>{{el.sold_status}}</td>
+                        {% if el.sold_status %}
+                          <td class="bg-warning">Yes</td>
+                        {% else %}
+                          <td class="bg-success">No</td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -25,7 +25,7 @@ def index(request):
         return render(request, 'rega/index.html', context)
 
 def contracts(request):
-    property_contracts = Contract.objects.all()
+    property_contracts = Contract.objects.all().order_by('-id')
     user_contract = User.objects.all()
     property_contracts_count = property_contracts.count()
     context = {
@@ -36,7 +36,7 @@ def contracts(request):
     return render(request, 'rega/contracts.html', context)
 
 def objects(request):
-    property_objects = PropertyObject.objects.all()
+    property_objects = PropertyObject.objects.all().order_by('-id')
     property_objects_count = property_objects.count()
     context = {
         'property_objects': property_objects,
