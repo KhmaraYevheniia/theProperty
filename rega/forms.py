@@ -1,5 +1,6 @@
+from django.contrib.auth import login
 from django.db import models
-from .models import User, PropertyObject
+from .models import User, PropertyObject, Contract
 # from django.forms import ModelForm, TextInput, fields, widgets, RadioSelect
 from django import forms
 
@@ -157,8 +158,36 @@ class PropertyObjectForm(forms.ModelForm):
             raise forms.ValidationError(f'The fields were entered incorrect!')
 
 
+class PropertyContractForm(forms.ModelForm):
 
-        # <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-        #         <label class="form-check-label" for="gridRadios1">
-        #             Администратор
-        #         </label>
+    class Meta:
+        
+        list_users = []
+        for user in User.objects.all():
+            list_users.append((user.id, user.full_name))
+        CHOICES = list_users
+        model = Contract
+        fields = ['property_object', 'sale_date', 'seller_name']
+        widgets = {
+            'property_object': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Property object',
+                'type': 'text'
+            }),
+            'sale_date': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '2021-06-06',
+                'type': 'date'
+            }),
+            'seller_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Seller name',
+                'type': 'text'
+            }),
+                'users': forms.Select(attrs={
+                'class': 'form-select',
+                'choices': CHOICES,
+                'id': 'multi-select-users'
+                
+            })
+        }
