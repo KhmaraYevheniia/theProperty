@@ -35,6 +35,15 @@ def contracts(request):
     }
     return render(request, 'rega/contracts.html', context)
 
+def objects(request):
+    property_objects = PropertyObject.objects.all()
+    property_objects_count = property_objects.count()
+    context = {
+        'property_objects': property_objects,
+        'property_objects_count': property_objects_count
+    }
+    return render(request, 'rega/objects.html', context)
+
 @login_required
 def create_object(request):
     error = ''
