@@ -56,9 +56,9 @@
                         <td>{{el.type}}</td>
                         <td>{{el.address}}</td>
                         {% if el.sold_status %}
-                            <td class="bg-warning">Yes</td>
+                        <td class="bg-warning">Yes</td>
                         {% else %}
-                            <td class="bg-success">No</td>
+                        <td class="bg-success">No</td>
                         {% endif %}
                     </tr>
                     {% endfor %}
@@ -68,25 +68,25 @@
         </div>
 
         <div class="row">
-          <ul class="pagination">
-            {% if property_objects.has_previous %}
-              <li class="pigi-item">
-                <a class="text-dark" href="?page={{ property_objects.previous_page_number }}">&laquo;</a>
-              </li>
-            {% endif %}
-            {% for page in property_objects.paginator.page_range %}
-              {% if page == property_objects.number %}
+            <ul class="pagination">
+                {% if property_objects.has_previous %}
+                <li class="pigi-item">
+                    <a class="text-dark" href="?page={{ property_objects.previous_page_number }}">&laquo;</a>
+                </li>
+                {% endif %}
+                {% for page in property_objects.paginator.page_range %}
+                {% if page == property_objects.number %}
                 <li class="pigi-item-current"><a class="white-text" href="?page={{page}}">{{page}}</a></li>
-              {% else %}
+                {% else %}
                 <li class="pigi-item-number"><a class="text-dark" href="?page={{page}}">{{page}}</a></li>
-              {% endif %}
-            {% endfor %}
-            {% if property_objects.has_next %}
-              <li class="pigi-item">
-                <a class="text-dark" href="?page={{ property_objects.next_page_number }}">&raquo;</a>
-              </li>
-            {% endif %}
-          </ul>
+                {% endif %}
+                {% endfor %}
+                {% if property_objects.has_next %}
+                <li class="pigi-item">
+                    <a class="text-dark" href="?page={{ property_objects.next_page_number }}">&raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </body>
@@ -112,6 +112,7 @@
       objects_div.innerHTML = response['html_from_view'];
       var table = document.getElementById("obj-table");
       var totalRowCount = table.rows.length;
+      console.log("totalRowCount: " + totalRowCount)
       if (totalRowCount < 12) {
         pigi.style.display = 'none';
       }
