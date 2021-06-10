@@ -12,5 +12,5 @@ urlpatterns = [
     path('create_contract', views.create_contract),
     path('contracts', views.contracts, name='contracts'),
     path('objects', views.objects),
-    path('^page/(\d+)/$', views.objects)
+    path('staff', views.staff, name='staff')
 ]

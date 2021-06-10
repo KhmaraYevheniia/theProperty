@@ -25,7 +25,7 @@
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th id="col-id" scope="col">ID <span id="id-sort" class="latitude-arrow">&#8597;</span></th>
+                        <th scope="col">ID</th>
                         <th scope="col">Latitude </th>
                         <th scope="col">Longitude</th>
                         <th scope="col">Square</th>
@@ -47,9 +47,9 @@
                         <td>{{el.type}}</td>
                         <td>{{el.address}}</td>
                         {% if el.sold_status %}
-                          <td class="bg-warning">Yes</td>
+                            <td class="bg-warning">Yes</td>
                         {% else %}
-                          <td class="bg-success">No</td>
+                            <td class="bg-success">No</td>
                         {% endif %}
                     </tr>
                     {% endfor %}

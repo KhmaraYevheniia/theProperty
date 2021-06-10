@@ -49,6 +49,15 @@ def objects(request):
     }
     return render(request, 'rega/objects.html', context)
 
+def staff(request):
+    property_staff = User.objects.all()
+    property_staff_count = property_staff.count()
+    context = {
+        'property_staff': property_staff,
+        'property_staff_count': property_staff_count
+    }
+    return render(request, 'rega/staff.html', context)
+
 @login_required
 def create_object(request):
     error = ''
@@ -62,7 +71,7 @@ def create_object(request):
             if form.is_valid():
                 new_object = form.save(commit=False)
                 new_object.save()
-                return redirect('dashboard')
+                return redirect('objects')
             else:
                 error = 'Not all required fields are filled!'
                 context = {
