@@ -26,31 +26,21 @@
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Latitude </th>
-                        <th scope="col">Longitude</th>
-                        <th scope="col">Square</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Username </th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Type</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Sold status</th>
                     </tr>
                 </thead>
-                {% if property_objects_count > 0 %}
+                {% if property_staff_count > 0 %}
                 <tbody>
-                    {% for el in property_objects %}
+                    {% for el in property_staff %}
                     <tr class="row-center">
                         <td>{{ el.id }}</td>
-                        <td>{{ el.latitude }}</td>
-                        <td>{{ el.longitude }}</td>
-                        <td>{{ el.square }}</td>
-                        <td>{{el.price}}</td>
+                        <td>{{ el.username }}</td>
+                        <td style="width: 400px;">{{ el.name }}</td>
+                        <td>{{ el.email }}</td>
                         <td>{{el.type}}</td>
-                        <td>{{el.address}}</td>
-                        {% if el.sold_status %}
-                            <td class="bg-warning">Yes</td>
-                        {% else %}
-                            <td class="bg-success">No</td>
-                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
