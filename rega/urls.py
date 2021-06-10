@@ -11,5 +11,6 @@ urlpatterns = [
     path('create_object', views.create_object),
     path('create_contract', views.create_contract),
     path('contracts', views.contracts, name='contracts'),
-    path('objects', views.objects, name='objects')
+    path('objects', views.objects, name='objects'),
+    path('staff', views.staff, name='staff')
 ]
