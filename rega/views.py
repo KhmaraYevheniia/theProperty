@@ -5,6 +5,8 @@ from .forms import LoginForm, RegistrationForm, PropertyObjectForm, PropertyCont
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count, Min, Sum
+from django.core.paginator import Paginator
+from django.shortcuts import render
 
 @login_required
 def index(request):
@@ -36,10 +38,13 @@ def contracts(request):
     return render(request, 'rega/contracts.html', context)
 
 def objects(request):
+    page_number = request.GET.get('page') or 1
     property_objects = PropertyObject.objects.all().order_by('-id')
+    current_page = Paginator(property_objects, 14)
+    page_obj = current_page.get_page(page_number)
     property_objects_count = property_objects.count()
     context = {
-        'property_objects': property_objects,
+        'property_objects': page_obj,
         'property_objects_count': property_objects_count
     }
     return render(request, 'rega/objects.html', context)
