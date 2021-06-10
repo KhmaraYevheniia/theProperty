@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count, Min, Sum
 from django.core.paginator import Paginator
 from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 @login_required
 def index(request):
@@ -39,10 +41,29 @@ def contracts(request):
 
 def objects(request):
     page_number = request.GET.get('page') or 1
-    property_objects = PropertyObject.objects.all().order_by('-id')
-    current_page = Paginator(property_objects, 14)
+    search_param = request.GET.get('search') or None
+    if search_param:
+        property_objects = PropertyObject.objects.filter(address__icontains=search_param).order_by('-id')
+    else:
+        property_objects = PropertyObject.objects.all().order_by('-id')
+
+    current_page = Paginator(property_objects, 12)
     page_obj = current_page.get_page(page_number)
     property_objects_count = property_objects.count()
+
+    if request.is_ajax():
+        html = render_to_string(
+            template_name="rega/objects-results-partial.html",
+            context = {
+                'property_objects': page_obj,
+                'property_objects_count': property_objects_count
+            }
+        )
+
+        data_dict = {"html_from_view": html}
+
+        return JsonResponse(data=data_dict, safe=False)
+
     context = {
         'property_objects': page_obj,
         'property_objects_count': property_objects_count

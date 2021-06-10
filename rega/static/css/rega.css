@@ -222,3 +222,23 @@ body {
 a{
   text-decoration: none;
 }
+.search_container{
+  display: flex;
+  justify-content: center;
+}
+#user-input{
+  border: 1px solid rgba(33, 39, 41, 0.8);
+
+}
+.my-serch-icon{
+  margin: 7px;
+  width: 30px!important;
+  height: 30px!important;
+  color: #ffff;
+}
+.my-icon-border{
+  background-color: rgba(33, 39, 41, 0.8);
+  width: 50%;
+  display: flex;
+  border-radius: 4px;
+}
