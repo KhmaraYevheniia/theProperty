@@ -243,3 +243,6 @@ a {
   display: flex;
   border-radius: 4px;
 }
+.current-header-link{
+  border-bottom: 1px solid #e0e0e0;
+}
