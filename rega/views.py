@@ -27,11 +27,14 @@ def index(request):
         return render(request, 'rega/index.html', context)
 
 def contracts(request):
+    page_number_contracts = request.GET.get('page') or 1
     property_contracts = Contract.objects.all().order_by('-id')
+    current_page_contracts = Paginator(property_contracts, 14)
+    page_contracts = current_page_contracts.get_page(page_number_contracts)
     user_contract = User.objects.all()
     property_contracts_count = property_contracts.count()
     context = {
-        'property_contracts': property_contracts,
+        'property_contracts': page_contracts,
         'user_contract': user_contract,
         'property_contracts_count': property_contracts_count
     }
@@ -50,10 +53,13 @@ def objects(request):
     return render(request, 'rega/objects.html', context)
 
 def staff(request):
+    page_number_staff = request.GET.get('page') or 1
     property_staff = User.objects.all()
+    current_page_staff = Paginator(property_staff, 14)
+    page_staff = current_page_staff.get_page(page_number_staff)
     property_staff_count = property_staff.count()
     context = {
-        'property_staff': property_staff,
+        'property_staff': page_staff,
         'property_staff_count': property_staff_count
     }
     return render(request, 'rega/staff.html', context)
