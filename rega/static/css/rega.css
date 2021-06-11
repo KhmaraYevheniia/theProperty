@@ -163,7 +163,6 @@ body {
   border: 1px solid #e0e0e0;
   width: 60%;
   padding: 20px;
-  height: 100%;
 }
 
 .contracts-table {
@@ -225,7 +224,7 @@ a {
 }
 .search_container{
   display: flex;
-  justify-content: center;
+  padding: 0 20px 0 20px;
 }
 #user-input{
   border: 1px solid rgba(33, 39, 41, 0.8);
@@ -239,10 +238,27 @@ a {
 }
 .my-icon-border{
   background-color: rgba(33, 39, 41, 0.8);
-  width: 50%;
+  width: 30%;
   display: flex;
   border-radius: 4px;
 }
 .current-header-link{
   border-bottom: 1px solid #e0e0e0;
+}
+.sort-by-obj-type{
+  display: flex;
+  margin-left: 20px;
+  min-width: 300px;
+}
+
+.sort-by-sold-status{
+  display: flex;
+  margin-left: 20px;
+  min-width: 300px;
+}
+
+.filter-by-price{
+  display: flex;
+  margin-left: 20px;
+  min-width: 300px;
 }

@@ -15,6 +15,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js'></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+        integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+        integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -27,6 +32,25 @@
              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
            </svg>
            <input class="form-control" id="user-input" placeholder="Searching...">
+         </div>
+         <div class="sort-by-obj-type">
+           <label for="property_object">Sort by type</label>
+           <select class='form-control' name="property_object" id="select-objects-types">
+               {% for t in all_types %}
+                 <option value="{{t.type}}">{{ t.type }}</option>
+               {% endfor %}
+           </select>
+         </div>
+         <div class="sort-by-sold-status">
+           <label for="sort-status">Sort by sold status</label>
+           <select class='form-control' name="sort-status" id="select-objects-sold_status">
+             <option value="{{True}}">Sold</option>
+             <option value="{{False}}">Unsold</option>
+           </select>
+         </div>
+         <div class="filter-by-price">
+           <label for="sort-price">Sort by price</label>
+           <input class="form-control" id="price-input" placeholder="price less than....">
          </div>
          </div>
        </div>
@@ -65,28 +89,28 @@
                 </tbody>
                 {% endif %}
             </table>
-        </div>
 
-        <div class="row">
-            <ul class="pagination">
-                {% if property_objects.has_previous %}
-                <li class="pigi-item">
-                    <a class="text-dark" href="?page={{ property_objects.previous_page_number }}">&laquo;</a>
-                </li>
-                {% endif %}
-                {% for page in property_objects.paginator.page_range %}
-                {% if page == property_objects.number %}
-                <li class="pigi-item-current"><a class="white-text" href="?page={{page}}">{{page}}</a></li>
-                {% else %}
-                <li class="pigi-item-number"><a class="text-dark" href="?page={{page}}">{{page}}</a></li>
-                {% endif %}
-                {% endfor %}
-                {% if property_objects.has_next %}
-                <li class="pigi-item">
-                    <a class="text-dark" href="?page={{ property_objects.next_page_number }}">&raquo;</a>
-                </li>
-                {% endif %}
-            </ul>
+            <div class="row">
+                <ul class="pagination">
+                    {% if property_objects.has_previous %}
+                    <li class="pigi-item">
+                        <a class="text-dark" href="?page={{ property_objects.previous_page_number }}">&laquo;</a>
+                    </li>
+                    {% endif %}
+                    {% for page in property_objects.paginator.page_range %}
+                    {% if page == property_objects.number %}
+                    <li class="pigi-item-current"><a id='my_pigi_link' class="white-text" href="?page={{page}}">{{page}}</a></li>
+                    {% else %}
+                    <li class="pigi-item-number"><a id='my_pigi_link' class="text-dark" href="?page={{page}}">{{page}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if property_objects.has_next %}
+                    <li class="pigi-item">
+                        <a class="text-dark" href="?page={{ property_objects.next_page_number }}">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 </body>
@@ -95,11 +119,121 @@
 
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", () => {
-    let objects_div = document.getElementById("my-objects");
-    let serch_input = document.getElementById("user-input");
-    let pigi = document.querySelector(".pagination");
+    var type_selector = $('#select-objects-types').selectize({
+      maxItems: null,
+      options: this.options,
+      placeholder: "Select a type...",
+     });
 
+     var sold_status_selector = $('#select-objects-sold_status').selectize({
+       maxItems: 2,
+       options: this.options,
+       placeholder: "Select the sold statuses...",
+      });
+
+    let objects_div = document.getElementById("my-objects");
+
+    let serch_input = document.getElementById("user-input");
     serch_input.addEventListener('change', search_request);
+
+    let pigi = document.querySelector(".pagination");
+    let price_input = document.getElementById("price-input");
+    price_input.addEventListener('change', search_by_less_price);
+
+    $('#select-objects-types').on('change', function() {
+      let types_to_filter = []
+      let select_items = document.querySelector(".sort-by-obj-type").querySelector(".selectize-input").getElementsByClassName("item");
+      for (var i = 0; i < select_items.length; i++) {
+        types_to_filter.push(select_items[i].getAttribute('data-value'));
+      }
+      console.log("filter string:" + types_to_filter)
+      filter_types(types_to_filter);
+    });
+
+    $('#select-objects-sold_status').on('change', function() {
+      let sold_status_filter = []
+      let select_items = document.querySelector(".sort-by-sold-status").querySelector(".selectize-input").getElementsByClassName("item");
+      for (var i = 0; i < select_items.length; i++) {
+        sold_status_filter.push(select_items[i].getAttribute('data-value'));
+      }
+      console.log("filter string sold_status:" + sold_status_filter)
+      filter_sold_status(sold_status_filter);
+    });
+
+    function filter_sold_status(current_sold_status) {
+      let request = $.ajax({
+        url: "?page=1&sold_status="+current_sold_status,
+        method: "GET",
+        dataType: "JSON"
+      });
+
+     request.done(function( response ) {
+      objects_div.innerHTML = response['html_from_view'];
+      var table = document.getElementById("obj-table");
+      var totalRowCount = table.rows.length;
+      console.log("totalRowCount: " + totalRowCount)
+      if (totalRowCount < 12) {
+        pigi.style.display = 'none';
+      }
+      else{
+        pigi.style.display = 'flex';
+      }
+     });
+
+     request.fail(function( jqXHR, textStatus ) {
+       console.log("Request failed: " + textStatus)
+     });
+    }
+
+    function filter_types(current_types) {
+      let request = $.ajax({
+        url: "?page=1&type="+current_types,
+        method: "GET",
+        dataType: "JSON"
+      });
+
+     request.done(function( response ) {
+      objects_div.innerHTML = response['html_from_view'];
+      var table = document.getElementById("obj-table");
+      var totalRowCount = table.rows.length;
+      console.log("totalRowCount: " + totalRowCount)
+      if (totalRowCount < 12) {
+        pigi.style.display = 'none';
+      }
+      else{
+        pigi.style.display = 'flex';
+      }
+     });
+
+     request.fail(function( jqXHR, textStatus ) {
+       console.log("Request failed: " + textStatus)
+     });
+    }
+
+    function search_by_less_price() {
+      let request = $.ajax({
+        url: "?page=1&less_price="+price_input.value,
+        method: "GET",
+        dataType: "JSON"
+      });
+
+     request.done(function( response ) {
+      objects_div.innerHTML = response['html_from_view'];
+      var table = document.getElementById("obj-table");
+      var totalRowCount = table.rows.length;
+      console.log("totalRowCount: " + totalRowCount)
+      if (totalRowCount < 12) {
+        pigi.style.display = 'none';
+      }
+      else{
+        pigi.style.display = 'flex';
+      }
+     });
+
+     request.fail(function( jqXHR, textStatus ) {
+       console.log("Request failed: " + textStatus)
+     });
+    }
 
     function search_request() {
       let request = $.ajax({
