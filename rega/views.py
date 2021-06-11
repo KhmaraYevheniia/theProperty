@@ -45,11 +45,22 @@ def contracts(request):
 def objects(request):
     page_number = request.GET.get('page') or 1
     search_param = request.GET.get('search') or None
+    type_param = request.GET.get('type') or None
+    sold_status_param = request.GET.get('sold_status') or None
+    price_param = request.GET.get('less_price') or None
+
     if search_param:
         property_objects = PropertyObject.objects.filter(address__icontains=search_param).order_by('-id')
+    elif type_param:
+        property_objects = PropertyObject.objects.filter(type__in=type_param.split(',')).order_by('-id')
+    elif sold_status_param:
+        property_objects = PropertyObject.objects.filter(sold_status__in=sold_status_param.split(',')).order_by('-id')
+    elif price_param:
+        property_objects = PropertyObject.objects.filter(price__lte=price_param).order_by('-price')
     else:
         property_objects = PropertyObject.objects.all().order_by('-id')
 
+    all_types = PropertyObject.objects.values('type').distinct()
     current_page = Paginator(property_objects, 12)
     page_obj = current_page.get_page(page_number)
     property_objects_count = property_objects.count()
@@ -59,7 +70,9 @@ def objects(request):
             template_name="rega/objects-results-partial.html",
             context = {
                 'property_objects': page_obj,
-                'property_objects_count': property_objects_count
+                'property_objects_count': property_objects_count,
+                'search_param': search_param,
+                'type_param': type_param
             }
         )
 
@@ -69,7 +82,8 @@ def objects(request):
 
     context = {
         'property_objects': page_obj,
-        'property_objects_count': property_objects_count
+        'property_objects_count': property_objects_count,
+        'all_types': all_types
     }
     return render(request, 'rega/objects.html', context)
 
